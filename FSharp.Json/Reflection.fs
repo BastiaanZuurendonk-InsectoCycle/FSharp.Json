@@ -47,8 +47,8 @@ module internal Reflection =
         let cache = new ConcurrentDictionary<'P, 'R>()
         fun parameter -> cache.GetOrAdd(parameter, theFunction)
 
-    let isRecord: Type -> bool = FSharpType.IsRecord |> cacheResult
-    let getRecordFields: Type -> PropertyInfo [] = FSharpType.GetRecordFields |> cacheResult
+    let isRecord: Type -> bool = (fun t -> FSharpType.IsRecord(t, BindingFlags.Public ||| BindingFlags.NonPublic)) |> cacheResult
+    let getRecordFields: Type -> PropertyInfo [] = (fun t -> FSharpType.GetRecordFields(t, BindingFlags.Public ||| BindingFlags.NonPublic)) |> cacheResult
 
     let isUnion: Type -> bool = FSharpType.IsUnion |> cacheResult
     let getUnionCases: Type -> UnionCaseInfo [] = FSharpType.GetUnionCases |> cacheResult

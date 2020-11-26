@@ -104,3 +104,14 @@ module Record =
         let config = JsonConfig.create(jsonFieldNaming = Json.snakeCase)
         let actual = Json.deserializeEx<UpperCaseRecord> config json
         Assert.AreEqual(expected, actual)
+
+    type RecordWithPrivateConstructor = private {
+        SomeValue: string
+    }
+
+    [<Test>]
+    let ``Record with private constructor serialization`` () =
+        let expected = { RecordWithPrivateConstructor.SomeValue = "The string" }
+        let json = Json.serialize(expected)
+        let actual = Json.deserialize<RecordWithPrivateConstructor> json
+        Assert.AreEqual(expected, actual)

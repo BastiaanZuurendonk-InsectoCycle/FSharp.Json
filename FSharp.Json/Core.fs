@@ -460,7 +460,7 @@ module internal Core =
             | JsonValue.Record fields ->
                 let props: PropertyInfo array = getRecordFields t
                 let propsValues = props |> Array.map (deserializeProperty path fields)
-                FSharpValue.MakeRecord(t, propsValues)
+                FSharpValue.MakeRecord(t, propsValues, BindingFlags.Public ||| BindingFlags.NonPublic)
             | _ -> failDeserialization path "Failed to parse record from JSON that is not object."
 
         let deserializeUnion (path: JsonPath) (t: Type) (jvalue: JsonValue): obj =
